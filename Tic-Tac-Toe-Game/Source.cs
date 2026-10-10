@@ -36,6 +36,50 @@ namespace TicTacToe
             Console.WriteLine("---------");
             Console.WriteLine($"{boardArr[6]} | {boardArr[7]} | {boardArr[8]}");
         }
+
+        public bool checkWin(string player)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                int rowStart = i * 3;
+
+                //가로
+                if (boardArr[rowStart] == player &&
+                   boardArr[rowStart + 1] == player &&
+                   boardArr[rowStart + 2] == player)
+                {
+                    return true;
+                }
+
+                //세로
+                if (boardArr[i] == player &&
+                   boardArr[i + 3] == player &&
+                   boardArr[i + 6] == player)
+                {
+                    return true;
+                }
+            }
+
+            //대각선
+            if (boardArr[0] == player &&
+               boardArr[4] == player &&
+               boardArr[8] == player)
+            {
+                return true;
+            }
+
+            if (boardArr[2] == player &&
+               boardArr[4] == player &&
+               boardArr[6] == player)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+
     }
 
     internal class Game
