@@ -96,6 +96,7 @@ namespace TicTacToe
 
     internal class Game
     {
+        private int gameMode; //1사람대전 2컴퓨터대전
         public Board board; //보드 메모리에 만들어짐
         public string player;
 
@@ -107,6 +108,7 @@ namespace TicTacToe
 
         public void Start()
         {
+            ChooseMode();
             string message = string.Empty;
 
             while (true)
@@ -205,7 +207,34 @@ namespace TicTacToe
 
         public void ChooseMode()
         {
+            while (true)
+            {
+                Console.Clear();
 
+                Console.WriteLine("게임 모드 선택");
+                Console.WriteLine("1. 두 사람 대전");
+                Console.WriteLine("2. 컴퓨터 대전");
+                Console.Write("선택: ");
+
+                string input = Console.ReadLine();
+
+                bool check = int.TryParse(input, out int mode);
+
+                if (!check)
+                {
+                    Console.WriteLine("숫자를 입력하세요");
+                    continue;
+                }
+
+                if (mode < 1 || mode > 2)
+                {
+                    Console.WriteLine("1 또는 2를 입력하세요");
+                    continue;
+                }
+
+                gameMode = mode;
+                break;
+            }
         }
     }
 }
