@@ -109,6 +109,7 @@ namespace TicTacToe
         public void Start()
         {
             ChooseMode();
+
             string message = string.Empty;
 
             while (true)
@@ -131,40 +132,94 @@ namespace TicTacToe
                     Console.WriteLine();
                 }
 
-                Console.WriteLine($"현재 차례: {player}");
-                Console.Write("위치 입력(1 ~ 9): ");
-                string input = Console.ReadLine();
-
-                if (input == string.Empty)
+                if (gameMode == 1)
                 {
-                    message = "입력이 비어있음";
-                    continue;
+                    //두 사람 대전
+                    Console.WriteLine($"현재 차례: {player}");
+                    Console.Write("위치 입력(1 ~ 9): ");
+                    string input = Console.ReadLine();
+
+                    if (input == string.Empty)
+                    {
+                        message = "입력이 비어있음";
+                        continue;
+                    }
+
+                    bool check = int.TryParse(input, out int position);
+
+                    if (!check)
+                    {
+                        message = "숫자를 입력하세요";
+                        continue;
+                    }
+
+                    if (position < 1 || position > 9)
+                    {
+                        message = "1부터 9까지 입력하세요";
+                        continue;
+                    }
+
+                    int index = position - 1;
+
+                    if (board.boardArr[index] != ".")
+                    {
+                        message = "이미 사용한 칸";
+                        continue;
+                    }
+
+                    board.boardArr[index] = player;
+                    message = string.Empty;
+                }
+                else
+                {
+                    //컴퓨터 대전
+                    if (player == "X")
+                    {
+                        //사람이 먼저 X임 
+                        Console.WriteLine($"현재 차례: {player}");
+                        Console.Write("위치 입력(1 ~ 9): ");
+                        string input = Console.ReadLine();
+
+                        if (input == string.Empty)
+                        {
+                            message = "입력이 비어있음";
+                            continue;
+                        }
+
+                        bool check = int.TryParse(input, out int position);
+
+                        if (!check)
+                        {
+                            message = "숫자를 입력하세요";
+                            continue;
+                        }
+
+                        if (position < 1 || position > 9)
+                        {
+                            message = "1부터 9까지 입력하세요";
+                            continue;
+                        }
+
+                        int index = position - 1;
+
+                        if (board.boardArr[index] != ".")
+                        {
+                            message = "이미 사용한 칸";
+                            continue;
+                        }
+
+                        board.boardArr[index] = player;
+                        message = string.Empty;
+                    }
+                    else
+                    {
+                        //컴퓨터 차례
+                        Console.WriteLine("컴퓨터 차례");
+
+                        //여기에 컴퓨터가 둘 위치 결정
+                    }
                 }
 
-                bool check = int.TryParse(input, out int position);
-
-                if (!check)
-                {
-                    message = "숫자를 입력하세요";
-                    continue;
-                }
-
-                if (position < 1 || position > 9)
-                {
-                    message = "1부터 9까지 입력하세요";
-                    continue;
-                }
-
-                int index = position - 1; //보드 배열 인덱스
-
-                if (board.boardArr[index] != ".")
-                {
-                    message = "이미 사용한 칸";
-                    continue;
-                }
-
-                board.boardArr[index] = player;
-                message = string.Empty;
                 //승리 판정
                 if (board.CheckWin(player))
                 {
@@ -174,7 +229,7 @@ namespace TicTacToe
                     board.PrintBoard();
 
                     Console.WriteLine();
-                    Console.WriteLine($"플레이어 {player} 승!");
+                    Console.WriteLine($"플레이어 {player} 승리!");
 
                     break;
                 }
@@ -188,7 +243,7 @@ namespace TicTacToe
                     board.PrintBoard();
 
                     Console.WriteLine();
-                    Console.WriteLine($"무승부!");
+                    Console.WriteLine("무승부!");
 
                     break;
                 }
@@ -204,7 +259,7 @@ namespace TicTacToe
                 }
             }
         }
-
+        
         public void ChooseMode()
         {
             while (true)
