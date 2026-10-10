@@ -202,5 +202,10 @@ namespace TicTacToe
                 }
             }
         }
+
+        public void ChooseMode()
+        {
+
+        }
     }
 }
