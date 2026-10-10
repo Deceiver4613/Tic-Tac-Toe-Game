@@ -151,7 +151,28 @@ namespace TicTacToe
 
                 board.boardArr[index] = player;
                 message = string.Empty;
+                //승리 판정
+                if (board.checkWin(player))
+                {
+                    Console.Clear();
 
+                    Console.WriteLine("현재 보드");
+                    board.PrintBoard();
+
+                    Console.WriteLine();
+                    Console.WriteLine($"플레이어 {player} 승!");
+
+                    break;
+                }
+
+
+
+
+
+
+
+
+                //차례 변경
                 if (player == "X")
                 {
                     player = "O";
