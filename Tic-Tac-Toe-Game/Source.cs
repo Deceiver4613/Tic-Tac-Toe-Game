@@ -49,36 +49,73 @@ namespace TicTacToe
             player = "X";
         }
 
-        public void start(){
+        public void Start()
+        {
+            string message = string.Empty;
+
             while (true)
             {
+                Console.Clear();
+
+                Console.WriteLine("위치 번호");
+                board.PrintBoardNumber();
+
+                Console.WriteLine();
+
+                Console.WriteLine("현재 보드");
+                board.PrintBoard();
+
+                Console.WriteLine();
+
+                if (message != string.Empty)
+                {
+                    Console.WriteLine(message);
+                    Console.WriteLine();
+                }
+
                 Console.WriteLine($"현재 차례: {player}");
-                Console.WriteLine($"위치 입력(1 ~ 9): ");
+                Console.Write("위치 입력(1 ~ 9): ");
                 string input = Console.ReadLine();
 
-                bool check = int.TryParse(input, out int position);
-                if (!check)
+                if (input == string.Empty)
                 {
-                    Console.WriteLine("숫자를 입력하세요");
+                    message = "입력이 비어있음";
                     continue;
                 }
 
-                if(position < 1 || position > 9)
+                bool check = int.TryParse(input, out int position);
+
+                if (!check)
                 {
-                    Console.WriteLine("1부터 9까지 입력하세요");
+                    message = "숫자를 입력하세요";
+                    continue;
+                }
+
+                if (position < 1 || position > 9)
+                {
+                    message = "1부터 9까지 입력하세요";
                     continue;
                 }
 
                 int index = position - 1; //보드 배열 인덱스
+
                 if (board.boardArr[index] != ".")
                 {
-                    Console.WriteLine("이미 사용한 칸");
+                    message = "이미 사용한 칸";
                     continue;
                 }
 
                 board.boardArr[index] = player;
+                message = string.Empty;
 
-                
+                if (player == "X")
+                {
+                    player = "O";
+                }
+                else
+                {
+                    player = "X";
+                }
             }
         }
     }
