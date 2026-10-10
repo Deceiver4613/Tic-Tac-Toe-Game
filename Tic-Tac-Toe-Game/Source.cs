@@ -56,7 +56,27 @@ namespace TicTacToe
                 Console.WriteLine($"위치 입력(1 ~ 9): ");
                 string input = Console.ReadLine();
 
-                bool check = int.Parse(input, out int position);
+                bool check = int.TryParse(input, out int position);
+                if (!check)
+                {
+                    Console.WriteLine("숫자를 입력하세요");
+                    continue;
+                }
+
+                if(position < 1 || position > 9)
+                {
+                    Console.WriteLine("1부터 9까지 입력하세요");
+                    continue;
+                }
+
+                int index = position - 1; //보드 배열 인덱스
+                if (board.boardArr[index] != ".")
+                {
+                    Console.WriteLine("이미 사용한 칸");
+                    continue;
+                }
+
+                board.boardArr[index] = player;
 
                 
             }
