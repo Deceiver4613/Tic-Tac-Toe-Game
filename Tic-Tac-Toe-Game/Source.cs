@@ -37,7 +37,7 @@ namespace TicTacToe
             Console.WriteLine($"{boardArr[6]} | {boardArr[7]} | {boardArr[8]}");
         }
 
-        public bool checkWin(string player)
+        public bool CheckWin(string player)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -78,6 +78,18 @@ namespace TicTacToe
             return false;
         }
 
+        public bool CheckDraw()
+        {
+            for (int i = 0; i < boardArr.Length; i++)
+            {
+                if (boardArr[i] == ".")
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
 
     }
@@ -152,7 +164,7 @@ namespace TicTacToe
                 board.boardArr[index] = player;
                 message = string.Empty;
                 //승리 판정
-                if (board.checkWin(player))
+                if (board.CheckWin(player))
                 {
                     Console.Clear();
 
@@ -165,12 +177,19 @@ namespace TicTacToe
                     break;
                 }
 
+                //무승부 판정
+                if (board.CheckDraw())
+                {
+                    Console.Clear();
 
+                    Console.WriteLine("현재 보드");
+                    board.PrintBoard();
 
+                    Console.WriteLine();
+                    Console.WriteLine($"무승부!");
 
-
-
-
+                    break;
+                }
 
                 //차례 변경
                 if (player == "X")
