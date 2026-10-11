@@ -96,7 +96,7 @@ namespace TicTacToe
 
     internal class Game
     {
-        private int gameMode; //1사람대전 2컴퓨터대전
+        private int gameMode; 
         private Random random;
         public Board board; //보드 메모리에 만들어짐
         public string player;
