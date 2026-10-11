@@ -110,74 +110,38 @@ namespace TicTacToe
 
         public void Start()
         {
-            ChooseMode();
-
-            string message = string.Empty;
-
             while (true)
             {
-                Console.Clear();
+                ChooseMode();
 
-                Console.WriteLine("위치 번호");
-                board.PrintBoardNumber();
+                board = new Board();
+                player = "X";
 
-                Console.WriteLine();
+                string message = string.Empty;
 
-                Console.WriteLine("현재 보드");
-                board.PrintBoard();
-
-                Console.WriteLine();
-
-                if (message != string.Empty)
+                while (true)
                 {
-                    Console.WriteLine(message);
+                    Console.Clear();
+
+                    Console.WriteLine("위치 번호");
+                    board.PrintBoardNumber();
+
                     Console.WriteLine();
-                }
 
-                if (gameMode == 1)
-                {
-                    //두 사람 대전
-                    Console.WriteLine($"현재 차례: {player}");
-                    Console.Write("위치 입력(1 ~ 9): ");
-                    string input = Console.ReadLine();
+                    Console.WriteLine("현재 보드");
+                    board.PrintBoard();
 
-                    if (input == string.Empty)
+                    Console.WriteLine();
+
+                    if (message != string.Empty)
                     {
-                        message = "입력이 비어있음";
-                        continue;
+                        Console.WriteLine(message);
+                        Console.WriteLine();
                     }
 
-                    bool check = int.TryParse(input, out int position);
-
-                    if (!check)
+                    if (gameMode == 1)
                     {
-                        message = "숫자를 입력하세요";
-                        continue;
-                    }
-
-                    if (position < 1 || position > 9)
-                    {
-                        message = "1부터 9까지 입력하세요";
-                        continue;
-                    }
-
-                    int index = position - 1;
-
-                    if (board.boardArr[index] != ".")
-                    {
-                        message = "이미 사용한 칸";
-                        continue;
-                    }
-
-                    board.boardArr[index] = player;
-                    message = string.Empty;
-                }
-                else
-                {
-                    //컴퓨터 대전
-                    if (player == "X")
-                    {
-                        //사람이 먼저 X임 
+                        //두 사람 대전
                         Console.WriteLine($"현재 차례: {player}");
                         Console.Write("위치 입력(1 ~ 9): ");
                         string input = Console.ReadLine();
@@ -215,73 +179,121 @@ namespace TicTacToe
                     }
                     else
                     {
-                        //컴퓨터 차례
-                        //랜덤 이지모드
-                        Console.WriteLine("컴퓨터 차례");
-
-                        int index;
-
-                        while (true)
+                        //컴퓨터 대전
+                        if (player == "X")
                         {
-                            index = random.Next(0, 9);
+                            //사람이 먼저 X임 
+                            Console.WriteLine($"현재 차례: {player}");
+                            Console.Write("위치 입력(1 ~ 9): ");
+                            string input = Console.ReadLine();
 
-                            if (board.boardArr[index] == ".")
+                            if (input == string.Empty)
                             {
-                                break;
+                                message = "입력이 비어있음";
+                                continue;
                             }
+
+                            bool check = int.TryParse(input, out int position);
+
+                            if (!check)
+                            {
+                                message = "숫자를 입력하세요";
+                                continue;
+                            }
+
+                            if (position < 1 || position > 9)
+                            {
+                                message = "1부터 9까지 입력하세요";
+                                continue;
+                            }
+
+                            int index = position - 1;
+
+                            if (board.boardArr[index] != ".")
+                            {
+                                message = "이미 사용한 칸";
+                                continue;
+                            }
+
+                            board.boardArr[index] = player;
+                            message = string.Empty;
                         }
+                        else
+                        {
+                            //컴퓨터 차례
+                            //랜덤 이지모드
+                            Console.WriteLine("컴퓨터 차례");
 
-                        board.boardArr[index] = player;
+                            int index;
+
+                            while (true)
+                            {
+                                index = random.Next(0, 9);
+
+                                if (board.boardArr[index] == ".")
+                                {
+                                    break;
+                                }
+                            }
+
+                            board.boardArr[index] = player;
 
 
-                        //컴퓨터가 둘 우선순위
-                        //1. 놓으면 바로 이길 수 있는 위치 찾아 놓기
-                        //2. 상대가 놓으면 이길수 있는 위치 방어
-                        //3. 5번두기(index == 4)
-                        ///////////////////////////////
+                            //컴퓨터가 둘 우선순위
+                            //1. 놓으면 바로 이길 수 있는 위치 찾아 놓기
+                            //2. 상대가 놓으면 이길수 있는 위치 방어
+                            //3. 5번두기(index == 4)
+                            ///////////////////////////////
+                        }
+                    }
+
+                    //승리 판정
+                    if (board.CheckWin(player))
+                    {
+                        Console.Clear();
+
+                        Console.WriteLine("현재 보드");
+                        board.PrintBoard();
+
+                        Console.WriteLine();
+                        Console.WriteLine($"플레이어 {player} 승리!");
+
+                        break;
+                    }
+
+                    //무승부 판정
+                    if (board.CheckDraw())
+                    {
+                        Console.Clear();
+
+                        Console.WriteLine("현재 보드");
+                        board.PrintBoard();
+
+                        Console.WriteLine();
+                        Console.WriteLine("무승부!");
+
+                        break;
+                    }
+
+                    //차례 변경
+                    if (player == "X")
+                    {
+                        player = "O";
+                    }
+                    else
+                    {
+                        player = "X";
                     }
                 }
 
-                //승리 판정
-                if (board.CheckWin(player))
+                //다시 하기
+                if (!Replay())
                 {
-                    Console.Clear();
-
-                    Console.WriteLine("현재 보드");
-                    board.PrintBoard();
-
-                    Console.WriteLine();
-                    Console.WriteLine($"플레이어 {player} 승리!");
-
-                    break;
-                }
-
-                //무승부 판정
-                if (board.CheckDraw())
-                {
-                    Console.Clear();
-
-                    Console.WriteLine("현재 보드");
-                    board.PrintBoard();
-
-                    Console.WriteLine();
-                    Console.WriteLine("무승부!");
-
-                    break;
-                }
-
-                //차례 변경
-                if (player == "X")
-                {
-                    player = "O";
-                }
-                else
-                {
-                    player = "X";
+                    return;
                 }
             }
         }
-        
+
         public void ChooseMode()
         {
             while (true)
@@ -311,6 +323,39 @@ namespace TicTacToe
 
                 gameMode = mode;
                 break;
+            }
+
+
+        }
+
+        private bool Replay()
+        {
+            while (true)
+            {
+                Console.WriteLine();
+                Console.Write("다시 하시겠습니까? (Y/N): ");
+
+                string input = Console.ReadLine();
+
+                if (input == string.Empty)
+                {
+                    Console.WriteLine("Y 또는 N을 입력하세요");
+                    continue;
+                }
+
+                input = input.ToUpper();
+
+                if (input == "Y")
+                {
+                    return true;
+                }
+
+                if (input == "N")
+                {
+                    return false;
+                }
+
+                Console.WriteLine("Y 또는 N을 입력하세요");
             }
         }
     }
