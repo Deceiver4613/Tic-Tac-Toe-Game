@@ -97,6 +97,7 @@ namespace TicTacToe
     internal class Game
     {
         private int gameMode; //1사람대전 2컴퓨터대전
+        private Random random;
         public Board board; //보드 메모리에 만들어짐
         public string player;
 
@@ -104,6 +105,7 @@ namespace TicTacToe
         {
             board = new Board();
             player = "X";
+            random = new Random();
         }
 
         public void Start()
@@ -214,9 +216,29 @@ namespace TicTacToe
                     else
                     {
                         //컴퓨터 차례
+                        //랜덤 이지모드
                         Console.WriteLine("컴퓨터 차례");
 
-                        //여기에 컴퓨터가 둘 위치 결정
+                        int index;
+
+                        while (true)
+                        {
+                            index = random.Next(0, 9);
+
+                            if (board.boardArr[index] == ".")
+                            {
+                                break;
+                            }
+                        }
+
+                        board.boardArr[index] = player;
+
+
+                        //컴퓨터가 둘 우선순위
+                        //1. 놓으면 바로 이길 수 있는 위치 찾아 놓기
+                        //2. 상대가 놓으면 이길수 있는 위치 방어
+                        //3. 5번두기(index == 4)
+                        ///////////////////////////////
                     }
                 }
 
